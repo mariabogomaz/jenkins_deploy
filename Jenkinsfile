@@ -6,6 +6,9 @@ pipeline {
         CONTAINER_NAME = 'jenkins-server'
         VOLUME_NAME = 'jenkins_home'
         CONFIG_DIR = '/var/jenkins_home/custom_config'
+        DOCKER_HOST = 'tcp://docker-dind:2376'
+        DOCKER_TLS_VERIFY = '1'
+        DOCKER_CERT_PATH = '/certs/client'
     }
 
     stages {
@@ -45,7 +48,7 @@ pipeline {
         stage('Post-Deployment Checks') {
             steps {
                 script {
-                      // Проверка доступности Jenkins
+                    // Проверка доступности Jenkins
                     timeout(time: 1, unit: 'MINUTES') {
                         waitUntil {
                             def response = sh(script: "curl -s -o /dev/null -w '%{http_code}' ${JENKINS_URL}", returnStatus: true)
@@ -53,7 +56,6 @@ pipeline {
                         }
                     }
                     echo 'Jenkins deployed successfully'
-
                 }
             }
         }
