@@ -5,7 +5,7 @@ pipeline {
         JENKINS_IMAGE = 'jenkins/jenkins:lts'
         CONTAINER_NAME = 'jenkins-server'
         VOLUME_NAME = 'jenkins_home'
-        CONFIG_DIR = '/path/to/jenkins_configuration'
+        CONFIG_DIR = '/var/jenkins_home/custom_config'
     }
 
     stages {
