@@ -8,7 +8,7 @@ pipeline {
         CONFIG_DIR = '/var/jenkins_home/custom_config'
         DOCKER_HOST = 'tcp://docker-dind:2376'
         DOCKER_TLS_VERIFY = '1'
-        DOCKER_CERT_PATH = '/certs/client'
+        DOCKER_CERT_PATH = '/certs/client/client'
     }
 
     stages {
