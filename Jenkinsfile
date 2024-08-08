@@ -38,8 +38,8 @@ pipeline {
                     
                     if (existingContainer) {
                         echo "Stopping and removing existing container ${JENKINS_CONTAINER_NAME}..."
-                        sh "docker stop ${existingContainer}"
-                        sh "docker rm ${existingContainer}"
+                        sh "docker stop ${existingContainer} || true"
+                        sh "docker rm ${existingContainer} || true"
                     } else {
                         echo "No existing container with name ${JENKINS_CONTAINER_NAME} found."
                     }
