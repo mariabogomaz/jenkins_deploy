@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        JENKINS_CONTAINER_NAME = 'jenkins-server'
+        JENKINS_CONTAINER_NAME = 'new-jenkins-server'
         JENKINS_IMAGE = 'jenkins/jenkins:lts'
         JENKINS_PORT = '8080'
         JENKINS_VOLUME = '/var/jenkins_home'
