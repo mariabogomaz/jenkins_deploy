@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     // Остановка и удаление старого контейнера, если он существует
-                    def existingContainer = sh(script: "docker ps -q -f name=${JENKINS_CONTAINER_NAME}", returnStdout: true).trim()
+                    def existingContainer = sh(script: "docker ps -a -f name=${JENKINS_CONTAINER_NAME}", returnStdout: true).trim()
                     
                     if (existingContainer) {
                         echo "Stopping and removing existing container ${JENKINS_CONTAINER_NAME}..."
