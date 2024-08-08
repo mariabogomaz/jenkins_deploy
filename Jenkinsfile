@@ -30,6 +30,22 @@ pipeline {
                 }
             }
         }
+        stage('Cleanup Old Jenkins Container') {
+            steps {
+                script {
+                    // Остановка и удаление старого контейнера, если он существует
+                    def existingContainer = sh(script: "docker ps -q -f name=${JENKINS_CONTAINER_NAME}", returnStdout: true).trim()
+                    
+                    if (existingContainer) {
+                        echo "Stopping and removing existing container ${JENKINS_CONTAINER_NAME}..."
+                        sh "docker stop ${existingContainer}"
+                        sh "docker rm ${existingContainer}"
+                    } else {
+                        echo "No existing container with name ${JENKINS_CONTAINER_NAME} found."
+                    }
+                }
+            }
+        }
         stage('Run Jenkins Container') {
             steps {
                 script {
