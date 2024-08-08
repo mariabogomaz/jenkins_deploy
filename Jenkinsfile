@@ -1,69 +1,24 @@
 pipeline {
     agent any
 
-    environment {
-        JENKINS_IMAGE = 'jenkins/jenkins:lts'
-        CONTAINER_NAME = 'jenkins-server'
-        VOLUME_NAME = 'jenkins_home'
-        CONFIG_DIR = '/var/jenkins_home/custom_config'
-        DOCKER_HOST = 'tcp://docker-dind:2376'
-        DOCKER_TLS_VERIFY = '1'
-        DOCKER_CERT_PATH = '/certs/client/client'
-    }
-
     stages {
-        stage('Pull Latest Jenkins Image') {
+        stage('Build') {
             steps {
-                script {
-                    sh "docker pull ${JENKINS_IMAGE}"
-                }
+                echo 'Building...'
+                // Здесь могут быть команды для сборки вашего проекта
             }
         }
-
-        stage('Stop and Remove Old Container') {
+        stage('Test') {
             steps {
-                script {
-                    sh """
-                    docker stop ${CONTAINER_NAME} || true
-                    docker rm ${CONTAINER_NAME} || true
-                    """
-                }
+                echo 'Testing...'
+                // Здесь могут быть команды для тестирования вашего проекта
             }
         }
-
-        stage('Run New Jenkins Container') {
+        stage('Deploy') {
             steps {
-                script {
-                    sh """
-                    docker run -d --name ${CONTAINER_NAME} -p 8080:8080 -p 50000:50000 \
-                    -v ${VOLUME_NAME}:/var/jenkins_home \
-                    -v ${CONFIG_DIR}:/var/jenkins_home/casc_configs \
-                    -e CASC_JENKINS_CONFIG=/var/jenkins_home/casc_configs \
-                    ${JENKINS_IMAGE}
-                    """
-                }
+                echo 'Deploying...'
+                // Здесь могут быть команды для деплоя вашего проекта
             }
-        }
-
-        stage('Post-Deployment Checks') {
-            steps {
-                script {
-                    // Проверка доступности Jenkins
-                    timeout(time: 1, unit: 'MINUTES') {
-                        waitUntil {
-                            def response = sh(script: "curl -s -o /dev/null -w '%{http_code}' ${JENKINS_URL}", returnStatus: true)
-                            return response == 200
-                        }
-                    }
-                    echo 'Jenkins deployed successfully'
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            cleanWs()
         }
     }
 }
